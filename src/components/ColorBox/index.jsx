@@ -7,8 +7,8 @@
  */
 
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@mui/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
@@ -22,8 +22,27 @@ import uncontrolled from '../../helpers/uncontrolled';
 import * as CommonTypes from '../../helpers/commonTypes';
 import useTranslate from '../../helpers/useTranslate';
 
-const useStyles = makeStyles(theme => ({
-  root: {
+const PREFIX = 'index';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  container: `${PREFIX}-container`,
+  colorboxHsvGradient: `${PREFIX}-colorboxHsvGradient`,
+  colorboxSliders: `${PREFIX}-colorboxSliders`,
+  colorboxInputs: `${PREFIX}-colorboxInputs`,
+  colorboxInput: `${PREFIX}-colorboxInput`,
+  colorboxColorBg: `${PREFIX}-colorboxColorBg`,
+  colorboxColor: `${PREFIX}-colorboxColor`,
+  colorboxControls: `${PREFIX}-colorboxControls`,
+  colorboxError: `${PREFIX}-colorboxError`
+};
+
+const StyledBox = styled(Box)((
+  {
+    theme
+  }
+) => ({
+  [`&.${classes.root}`]: {
     // Ugly fix for beta 1
     backgroundColor: theme.palette ? theme.palette.background.paper : 'fff',
     position: 'relative',
@@ -31,30 +50,36 @@ const useStyles = makeStyles(theme => ({
     height: 'min-content',
     padding: '0px',
   },
-  container: {
+
+  [`& .${classes.container}`]: {
     justifyContent: 'space-around',
     overflow: 'hidden',
     width: props => props.boxWidth,
     padding: 0,
   },
-  colorboxHsvGradient: {
+
+  [`& .${classes.colorboxHsvGradient}`]: {
     width: props => `calc(${props.boxWidth}px - 16px)`,
     height: 'calc(128px - 16px)',
     margin: 8,
   },
-  colorboxSliders: {
+
+  [`& .${classes.colorboxSliders}`]: {
     width: props => props.boxWidth,
     padding: '8px 8px 4px 8px',
   },
-  colorboxInputs: {
+
+  [`& .${classes.colorboxInputs}`]: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
     padding: '8px 4px 8px 8px',
     justifyContent: 'space-between',
   },
-  colorboxInput: {},
-  colorboxColorBg: {
+
+  [`& .${classes.colorboxInput}`]: {},
+
+  [`& .${classes.colorboxColorBg}`]: {
     width: 48,
     height: 48,
     background:
@@ -64,7 +89,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'white',
     borderRadius: 4,
   },
-  colorboxColor: {
+
+  [`& .${classes.colorboxColor}`]: {
     width: 48,
     height: 48,
     background: props =>
@@ -81,7 +107,8 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 4,
     border: props => (props.colorError ? '2px solid #f44336' : 'none'),
   },
-  colorboxControls: {
+
+  [`& .${classes.colorboxControls}`]: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -90,10 +117,11 @@ const useStyles = makeStyles(theme => ({
       marginLeft: 'auto',
     },
   },
-  colorboxError: {
+
+  [`& .${classes.colorboxError}`]: {
     color: '#f44336',
     lineHeight: '36.5px',
-  },
+  }
 }));
 
 const ColorBox = ({
@@ -121,7 +149,7 @@ const ColorBox = ({
   const cssColor = getCssColor(color, 'hex', true);
   const { backgroundColor } = color.css;
   const boxWidth = 320;
-  const classes = useStyles({ boxWidth, backgroundColor, colorError: !!color.error });
+
 
   const handleSet = () => {
     onDeferredChange(color);
@@ -176,7 +204,7 @@ const ColorBox = ({
     );
 
   return (
-    <Box p={2} className={classes.root} {...props}>
+    <StyledBox p={2} className={classes.root} {...props}>
       <Box className={classes.container}>
         <HSVGradient
           className={`muicc-colorbox-hsvgradient ${classes.colorboxHsvGradient}`}
@@ -227,7 +255,7 @@ const ColorBox = ({
           {deferred && <Button onClick={handleSet}>{t('Set')}</Button>}
         </div>
       </Box>
-    </Box>
+    </StyledBox>
   );
 };
 

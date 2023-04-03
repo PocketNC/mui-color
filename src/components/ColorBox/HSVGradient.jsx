@@ -7,60 +7,53 @@
  */
 
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@mui/styles';
 import * as CommonTypes from '../../helpers/commonTypes';
 import useEventCallback from '../../helpers/useEventCallback';
 
-const getRGB = _h => {
-  let rgb;
-  const h = _h / 360;
-  let v = 255;
-  let i = Math.floor(h * 6);
-  const f = h * 6 - i;
-  const p = 0;
-  const q = Math.round(v * (1 - f));
-  const t = Math.round(v * f);
-  v = Math.round(v);
-  i %= 6;
-  if (i === 0) rgb = [v, t, p];
-  else if (i === 1) rgb = [q, v, p];
-  else if (i === 2) rgb = [p, v, t];
-  else if (i === 3) rgb = [p, q, v];
-  else if (i === 4) rgb = [t, p, v];
-  else rgb = [v, p, q]; // if (i === 5)
-  return rgb;
+const PREFIX = 'HSVGradient';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  gradientPosition: `${PREFIX}-gradientPosition`,
+  hsvGradientS: `${PREFIX}-hsvGradientS`,
+  hsvGradientV: `${PREFIX}-hsvGradientV`,
+  hslGradientS: `${PREFIX}-hslGradientS`,
+  hslGradientL: `${PREFIX}-hslGradientL`,
+  hsvGradientCursor: `${PREFIX}-hsvGradientCursor`,
+  hsvGradientCursorC: `${PREFIX}-hsvGradientCursorC`
 };
 
-const useStyles = makeStyles({
-  root: {
+const Root = styled('div')({
+  [`& .${classes.root}`]: {
     position: 'absolute',
     width: 'inherit',
     height: 'inherit',
     background: props => `${props.cssRgb} none repeat scroll 0% 0%`,
     margin: 0,
   },
-  gradientPosition: {
+  [`& .${classes.gradientPosition}`]: {
     position: 'absolute',
     width: '100%',
     height: '100%',
   },
-  hsvGradientS: {
+  [`& .${classes.hsvGradientS}`]: {
     background:
       'rgba(0, 0, 0, 0) linear-gradient(to right, rgb(255, 255, 255), rgba(255, 255, 255, 0)) repeat scroll 0% 0%',
   },
-  hsvGradientV: {
+  [`& .${classes.hsvGradientV}`]: {
     background: 'rgba(0, 0, 0, 0) linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0)) repeat scroll 0% 0%',
   },
-  hslGradientS: {
+  [`& .${classes.hslGradientS}`]: {
     background:
       'rgba(0, 0, 0, 0) linear-gradient(to bottom, rgb(128, 128, 128), rgba(255, 255, 255, 0)) repeat scroll 0% 0%',
   },
-  hslGradientL: {
+  [`& .${classes.hslGradientL}`]: {
     background:
       'rgba(0, 0, 0, 0) linear-gradient(to left, rgb(0, 0, 0), rgba(128, 128, 128, 0), rgb(255, 255, 255)) repeat scroll 0% 0%',
   },
-  hsvGradientCursor: {
+  [`& .${classes.hsvGradientCursor}`]: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -84,13 +77,33 @@ const useStyles = makeStyles({
       //  TODO
     },
   },
-  hsvGradientCursorC: {
+  [`& .${classes.hsvGradientCursorC}`]: {
     width: 8,
     height: 8,
     borderRadius: 4,
     boxShadow: 'white 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08)',
   },
 });
+
+const getRGB = _h => {
+  let rgb;
+  const h = _h / 360;
+  let v = 255;
+  let i = Math.floor(h * 6);
+  const f = h * 6 - i;
+  const p = 0;
+  const q = Math.round(v * (1 - f));
+  const t = Math.round(v * f);
+  v = Math.round(v);
+  i %= 6;
+  if (i === 0) rgb = [v, t, p];
+  else if (i === 1) rgb = [q, v, p];
+  else if (i === 2) rgb = [p, v, t];
+  else if (i === 3) rgb = [p, q, v];
+  else if (i === 4) rgb = [t, p, v];
+  else rgb = [v, p, q]; // if (i === 5)
+  return rgb;
+};
 
 const HSVGradient = ({ className, color, onChange, isHsl, ...props }) => {
   const latestColor = React.useRef(color);
@@ -104,7 +117,7 @@ const HSVGradient = ({ className, color, onChange, isHsl, ...props }) => {
   let cursorPos = { x: 0, y: 0 };
   const rgb = getRGB(color.hsv[0]);
   const cssRgb = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
-  const classes = useStyles({ ...props, cssRgb });
+
 
   const setPosition = (pos, f) => {
     cursorPos = pos;
@@ -236,7 +249,7 @@ const HSVGradient = ({ className, color, onChange, isHsl, ...props }) => {
     event.preventDefault();
   });
   return (
-    <div className={className}>
+    <Root className={className}>
       <div className={classes.root} {...props} ref={box} data-testid="hsvgradient-color">
         <div
           className={`muicc-hsvgradient-s ${isHsl ? classes.hslGradientS : classes.hsvGradientS} ${
@@ -267,7 +280,7 @@ const HSVGradient = ({ className, color, onChange, isHsl, ...props }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Root>
   );
 };
 

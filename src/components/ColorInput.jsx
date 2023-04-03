@@ -8,27 +8,35 @@
  */
 
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
-import { makeStyles } from '@mui/styles';
 import * as ColorTool from '../helpers/colorTool';
 import uncontrolled from '../helpers/uncontrolled';
 import * as CommonTypes from '../helpers/commonTypes';
 import useTranslate from '../helpers/useTranslate';
 
-const useStyles = makeStyles({
-  root: {
+const PREFIX = 'ColorInput';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  colorinputRaw: `${PREFIX}-colorinputRaw`,
+  formControl: `${PREFIX}-formControl`
+};
+
+const StyledFormControl = styled(FormControl)({
+  [`& .${classes.root}`]: {
     display: 'flex',
     flexDirection: 'row',
   },
-  colorinputRaw: {
+  [`& .${classes.colorinputRaw}`]: {
     paddingRight: 4,
   },
-  formControl: {
+  [`& .${classes.formControl}`]: {
     width: 100,
   },
 });
@@ -43,7 +51,7 @@ const ColorInput = ({
   disablePlainColor,
   ...props
 }) => {
-  const classes = useStyles();
+
   const { t, i18n } = useTranslate();
   const color = ColorTool.validateColor(value, disableAlpha, t, i18n.language, disablePlainColor);
   let field;
@@ -100,9 +108,9 @@ const ColorInput = ({
     field = (
       <div ref={forwardRef} className={classes.root}>
         {names.map(cn => (
-          <FormControl key={cn} className={`muicc-colorinput-raw ${classes.colorinputRaw}`} error={!!color.error}>
+          <StyledFormControl key={cn} className={`muicc-colorinput-raw ${classes.colorinputRaw}`} error={!!color.error}>
             {buildInput(cn, components[cn].name, components[cn].value, components[cn].unit, names.length === 1)}
-          </FormControl>
+          </StyledFormControl>
         ))}
       </div>
     );

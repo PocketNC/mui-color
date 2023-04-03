@@ -6,12 +6,23 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import Slider from '@mui/material/Slider';
-import { makeStyles } from '@mui/styles';
 import * as CommonTypes from '../../helpers/commonTypes';
 
-const useStyles = makeStyles({
-  root: {
+const PREFIX = 'AlphaSlider';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  rail: `${PREFIX}-rail`,
+  track: `${PREFIX}-track`,
+  thumb: `${PREFIX}-thumb`
+};
+
+const StyledSlider
+ = styled(Slider
+)({
+  [`& .${classes.root}`]: {
     color: '#666',
     width: '100%',
     height: 16,
@@ -23,7 +34,7 @@ const useStyles = makeStyles({
     backgroundPosition: '0 0, 4px 0, 4px -4px, 0px 4px',
   },
 
-  rail: {
+  [`& .${classes.rail}`]: {
     height: 16,
     opacity: 1,
     background: props =>
@@ -31,13 +42,13 @@ const useStyles = makeStyles({
     borderRadius: 0,
   },
 
-  track: {
+  [`& .${classes.track}`]: {
     height: 16,
     opacity: 0,
     borderRadius: 4,
   },
 
-  thumb: {
+  [`& .${classes.thumb}`]: {
     width: 16,
     height: 16,
     marginTop: 0,
@@ -52,7 +63,7 @@ const useStyles = makeStyles({
 });
 
 function AlphaSlider({ color, ...props }) {
-  const classes = useStyles({ color });
+
 
   return (
     <Slider

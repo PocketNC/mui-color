@@ -6,17 +6,27 @@
  * LICENSE file in the root directory of this source tree.
  */
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import Slider from '@mui/material/Slider';
-import { makeStyles } from '@mui/styles';
+const PREFIX = 'HueSlider';
 
-const useStyles = makeStyles(() => ({
-  root: {
+const classes = {
+  root: `${PREFIX}-root`,
+  rail: `${PREFIX}-rail`,
+  track: `${PREFIX}-track`,
+  thumb: `${PREFIX}-thumb`
+};
+
+const StyledSlider
+ = styled(Slider
+)(() => ({
+  [`& .${classes.root}`]: {
     width: '100%',
     height: 16,
     padding: 0,
   },
 
-  rail: {
+  [`& .${classes.rail}`]: {
     height: 16,
     opacity: 1,
     background:
@@ -24,14 +34,14 @@ const useStyles = makeStyles(() => ({
     borderRadius: 0,
   },
 
-  track: {
+  [`& .${classes.track}`]: {
     height: 16,
     opacity: 0,
     borderRadius: 4,
     backgroundColor: 'transparent',
   },
 
-  thumb: {
+  [`& .${classes.thumb}`]: {
     width: 16,
     height: 16,
     marginTop: 0,
@@ -42,11 +52,11 @@ const useStyles = makeStyles(() => ({
     '&:focus': {
       boxShadow: '0px 0px 0px 8px rgba(63, 81, 181, 0.16)',
     },
-  },
+  }
 }));
 
 function HueSlider(props) {
-  const classes = useStyles();
+
 
   return (
     <Slider

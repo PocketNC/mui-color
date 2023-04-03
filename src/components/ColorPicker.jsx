@@ -9,10 +9,10 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import TextField from '@mui/material/TextField';
 import Popover from '@mui/material/Popover';
-import { StylesProvider, createGenerateClassName, makeStyles } from '@mui/styles';
 
 import ColorButton from './ColorButton';
 import ColorBox from './ColorBox';
@@ -21,19 +21,22 @@ import uncontrolled from '../helpers/uncontrolled';
 import * as CommonTypes from '../helpers/commonTypes';
 import useTranslate from '../helpers/useTranslate';
 
-const useStyles = makeStyles({
-  root: {
+const PREFIX = 'ColorPicker';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  colorpickerButton: `${PREFIX}-colorpickerButton`
+};
+
+const StyledContainer = styled('div')({
+  [`& .${classes.root}`]: {
     display: 'flex',
     flexDirection: 'row',
     width: 'max-content',
   },
-  colorpickerButton: {
+  [`& .${classes.colorpickerButton}`]: {
     margin: 6,
   },
-});
-
-const generateClassName = createGenerateClassName({
-  seed: 'ColorPicker',
 });
 
 const getColorText = (color, disablePlainColor) => {
@@ -65,7 +68,7 @@ const ColorPicker = ({
   hideTextfield,
   disablePlainColor,
 }) => {
-  const classes = useStyles();
+
   const refPicker = useRef(null);
   const [open, setOpen] = useState(false);
   const { t, i18n } = useTranslate();
@@ -147,7 +150,7 @@ const ColorPicker = ({
   }
 
   return (
-    <StylesProvider generateClassName={generateClassName}>
+    <StyledContainer>
       <div ref={refPicker} className={classes.root}>
         <ColorButton
           data-testid="colorpicker-button"
@@ -158,7 +161,7 @@ const ColorPicker = ({
         {textField}
         {box}
       </div>
-    </StylesProvider>
+    </StyledContainer>
   );
 };
 

@@ -8,27 +8,34 @@
  */
 
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@mui/styles';
 import ColorButton from './ColorButton';
 import * as CommonTypes from '../helpers/commonTypes';
 import useTranslate from '../helpers/useTranslate';
 
-const useStyles = makeStyles({
-  root: {
+const PREFIX = 'ColorPalette';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  paletteButton: `${PREFIX}-paletteButton`
+};
+
+const Root = styled('div')({
+  [`&.${classes.root}`]: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
     padding: '8px 0 0 8px',
   },
-  paletteButton: {
+  [`& .${classes.paletteButton}`]: {
     margin: '0 8px 8px 0',
     padding: 0,
   },
 });
 
 const ColorPalette = ({ size, borderWidth, palette, onSelect, disableAlpha }) => {
-  const classes = useStyles();
+
   const { t } = useTranslate();
   const handleSelectColor = name => {
     const translatedName = t(name);
@@ -36,7 +43,7 @@ const ColorPalette = ({ size, borderWidth, palette, onSelect, disableAlpha }) =>
   };
 
   return (
-    <div className={classes.root}>
+    <Root className={classes.root}>
       {Object.keys(palette).map(name => (
         <ColorButton
           size={size}
@@ -49,7 +56,7 @@ const ColorPalette = ({ size, borderWidth, palette, onSelect, disableAlpha }) =>
           onClick={() => handleSelectColor(name)}
         />
       ))}
-    </div>
+    </Root>
   );
 };
 

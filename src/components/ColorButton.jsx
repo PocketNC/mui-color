@@ -7,16 +7,23 @@
  */
 
 import React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
-import { makeStyles } from '@mui/styles';
 import * as ColorTool from '../helpers/colorTool';
 import * as CommonTypes from '../helpers/commonTypes';
 import useTranslate from '../helpers/useTranslate';
 
-const useStyles = makeStyles({
-  root: {
+const PREFIX = 'ColorButton';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  tooltip: `${PREFIX}-tooltip`
+};
+
+const StyledTooltip = styled(Tooltip)({
+  [`& .${classes.root}`]: {
     backgroundImage: props =>
       props.colorError || props.alpha < 1
         ? `
@@ -70,7 +77,7 @@ const useStyles = makeStyles({
     },
   },
 
-  tooltip: {
+  [`& .${classes.tooltip}`]: {
     width: 'min-content',
   },
 });
@@ -98,7 +105,7 @@ const ColorButton = ({
   if (l < 30) l = color.hsl[2] + 50;
   const a = color.alpha;
   const hoverColor = `hsl(${color.hsl[0]}, ${color.hsl[1]}%, ${l}%, ${a})`;
-  const classes = useStyles({
+
     width: size,
     minWidth: size,
     height: size,
@@ -123,9 +130,9 @@ const ColorButton = ({
   );
   if (tooltip) {
     return (
-      <Tooltip title={translated}>
+      <StyledTooltip title={translated}>
         <div className={classes.tooltip}>{component}</div>
-      </Tooltip>
+      </StyledTooltip>
     );
   }
   return component;
